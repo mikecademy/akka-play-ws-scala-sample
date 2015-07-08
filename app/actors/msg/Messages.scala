@@ -11,4 +11,6 @@ case class WriteMsg(line:String) extends Command
 // events
 trait Event
 
+case class WriteResult(lines:Long, chars:Long)
+
 object EOF extends Event

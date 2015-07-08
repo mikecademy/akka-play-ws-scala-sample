@@ -30,8 +30,8 @@ object Application extends Controller {
     // then we should provide with proper testings
 
     historyActor ! WriteMsg("line 1")
-//    historyActor ! WriteMsg("line 2")
-//    historyActor ! WriteMsg("line 3")
+    historyActor ! WriteMsg("line 2")
+    historyActor ! WriteMsg("line 3")
 
     historyActor ! ReadMsg(0)
     historyActor ! ReadMsg(1)

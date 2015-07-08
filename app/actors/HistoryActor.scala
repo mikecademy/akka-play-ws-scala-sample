@@ -1,6 +1,6 @@
 package actors
 
-import actors.msg.{WriteMsg, ReadMsg}
+import actors.msg.{WriteResult, WriteMsg, ReadMsg}
 import akka.actor._
 import akka.routing._
 
@@ -46,7 +46,13 @@ class HistoryActor(fileName:String) extends Actor with ActorLogging {
 
       log.info("forwarding " + cmd + " to the writer" )
 
-      writerActor forward cmd
+      writerActor ! cmd
+
+    }
+
+    case result: WriteResult => {
+
+      log.info("WriteResult: " + result)
 
     }
 

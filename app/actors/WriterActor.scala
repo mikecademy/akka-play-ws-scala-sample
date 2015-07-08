@@ -1,8 +1,9 @@
 package actors
 
+import java.io.{File, FileWriter}
 import java.nio.file.Path
 
-import actors.msg.WriteMsg
+import actors.msg.{WriteResult, WriteMsg}
 import akka.actor.{ActorLogging, Actor}
 
 /**
@@ -20,7 +21,10 @@ import akka.actor.{ActorLogging, Actor}
 
 class WriterActor(fileName: String) extends Actor with ActorLogging {
 
-  var currentPos: Long = 0
+  var lines: Long = 0
+  var chars: Long = 0
+
+  val fileWriter = new FileWriter(new File(fileName), true)
 
   override def preStart(): Unit = {
 
@@ -32,6 +36,19 @@ class WriterActor(fileName: String) extends Actor with ActorLogging {
 
     case msg:WriteMsg  => {
       log.info("got '" + msg.line + "' in WriterActor")
+
+
+      val line = msg.line + "\n"
+
+      fileWriter.write(line)                 // append to file
+      fileWriter.flush()
+
+      // increment the states
+      lines += 1
+      chars += line.length
+
+      sender() ! WriteResult(lines, chars) // return an acknowledgement once an entry has been appended
+
     }
 
     case _ => {
