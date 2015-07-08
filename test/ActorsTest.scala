@@ -57,17 +57,10 @@ class ActorsTest
   }
 
 
-  // TODO:
   "A History Actor" must {
 
-//    // given
-      val historyActorRef = TestActorRef(new HistoryActor("history-file.log"))       // Creation of the TestActorRef
-
-
-//      "resend WriteMessage to WriterActor" in {
-//        // TODO:
-//      }
-
+   // given
+   val historyActorRef = TestActorRef(new HistoryActor("history-file.log"))       // Creation of the TestActorRef
 
     val writerActorRef = TestActorRef(new WriterActor("history-file.log"))       // Creation of the TestActorRef
 
@@ -80,13 +73,8 @@ class ActorsTest
       // when
       historyActorRef ! WriteMsg("line 1")
 
-      // then (1) - got WriteResult (from WriterActor as result of getting WriteMsg)
-      within(200 millis) {
-        //expectMsg(WriteResult(1, 7))
-      }
-
       // then (2) - state
-      //historyActorRef.underlyingActor.lastWrite must equal(WriteResult(1,7)) // With actorRef.underlyingActor, we can access the react actor instance created by Akka
+      historyActorRef.underlyingActor.lastWrite must equal(WriteResult(1,7)) // With actorRef.underlyingActor, we can access the react actor instance created by Akka
     }
   }
 
