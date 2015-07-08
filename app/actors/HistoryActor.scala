@@ -22,7 +22,7 @@ class HistoryActor(fileName:String) extends Actor with ActorLogging {
   // create a child actors
 
 
- val writerActor = context.actorOf(
+ var writerActor = context.actorOf(
                                     Props(classOf[WriterActor], fileName),
                                     name = "writer-actor")                    // one writer
 

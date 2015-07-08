@@ -23,7 +23,9 @@ class WriterActor(fileName: String) extends Actor with ActorLogging {
   var lines: Long = 0
   var chars: Long = 0
 
-  val fileWriter = new FileWriter(new File(fileName), true)
+  val file = new File(fileName)
+
+  val fileWriter = new FileWriter(file, true)
 
   override def preStart(): Unit = {
 
