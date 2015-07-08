@@ -1,7 +1,6 @@
 package actors
 
 import java.io.{File, FileWriter}
-import java.nio.file.Path
 
 import actors.msg.{WriteResult, WriteMsg}
 import akka.actor.{ActorLogging, Actor}

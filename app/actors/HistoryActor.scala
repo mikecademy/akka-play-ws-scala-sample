@@ -1,6 +1,6 @@
 package actors
 
-import actors.msg.{WriteResult, WriteMsg, ReadMsg}
+import actors.msg._
 import akka.actor._
 import akka.routing._
 
@@ -26,19 +26,31 @@ class HistoryActor(fileName:String) extends Actor with ActorLogging {
                                     Props(classOf[WriterActor], fileName),
                                     name = "writer-actor")                    // one writer
 
-  val workerActors = context.actorOf(
+  val readerActors = context.actorOf(
                                       Props(classOf[ReaderActor], fileName).withRouter(RoundRobinPool(4)),
                                       name = "reader-actor")
 
+  var lastWrite: WriteResult = WriteResult(0, 0)
+
   override def receive: Receive = {
 
-    case cmd : ReadMsg => {
+    case ReadNextMsg => {
+
+      log.info("forwarding " + ReadNextMsg + " to the reader" )
+
+      //routerReaders.route(cmd, sender())
+
+      readerActors forward ReadNextMsg
+
+    }
+
+    case cmd : ReadAtMsg => {
 
       log.info("forwarding " + cmd + " to the reader" )
 
       //routerReaders.route(cmd, sender())
 
-      workerActors forward  cmd
+      readerActors forward cmd
 
     }
 
@@ -53,6 +65,8 @@ class HistoryActor(fileName:String) extends Actor with ActorLogging {
     case result: WriteResult => {
 
       log.info("WriteResult: " + result)
+
+      lastWrite = result                  // update the state
 
     }
 

@@ -1,9 +1,10 @@
 package controllers
 
-import actors.msg.{WriteMsg, ReadMsg}
+import actors.msg.{ReadNextMsg, WriteMsg, ReadAtMsg}
 import actors.{HistoryActor}
 import akka.actor.{ActorSystem, Props}
 import play.api.mvc._
+import scala.concurrent.duration.Duration
 
 import play.api.Play.current // brings the current running Application into context
 
@@ -33,9 +34,9 @@ object Application extends Controller {
     historyActor ! WriteMsg("line 2")
     historyActor ! WriteMsg("line 3")
 
-    historyActor ! ReadMsg(0)
-    historyActor ! ReadMsg(1)
-    historyActor ! ReadMsg(2)
+    historyActor ! ReadNextMsg
+    historyActor ! ReadNextMsg
+    historyActor ! ReadNextMsg
 
     Ok(views.html.index("History Demo"))
   }

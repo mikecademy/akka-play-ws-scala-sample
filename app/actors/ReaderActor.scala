@@ -1,6 +1,8 @@
 package actors
 
-import actors.msg.ReadMsg
+import java.io.RandomAccessFile
+
+import actors.msg.{ReadNextMsg, ReadAtMsg}
 import akka.actor.{ActorLogging, Actor}
 
 /**
@@ -23,7 +25,9 @@ import akka.actor.{ActorLogging, Actor}
  */
 class ReaderActor(fileName: String) extends Actor with ActorLogging {
 
-  var currentPos = 0 // reading position in the file (mutable state)
+  var position = 0 // where start reading from (mutable state)
+
+  val file = new RandomAccessFile(fileName, "r")
 
   override def preStart(): Unit = {
 
@@ -33,13 +37,28 @@ class ReaderActor(fileName: String) extends Actor with ActorLogging {
 
   override def receive: Receive = {
 
-    case msg: ReadMsg => {
+    case ReadNextMsg => {
 
-      // TODO:
-      // case: read next
-      // case: read random
+      log.info("got ReadNextMsg")
 
-      log.info("got ReadMsg for line number: " + msg.position)
+      file.seek(position) // go to the current position in the file
+
+      val line = file.readLine()
+
+      log.info("has read next line '" + line + "' at position " + position)
+
+      position += line.length     // increment position
+    }
+
+    case msg: ReadAtMsg => {
+
+      log.info("got ReadAtMsg for line number: " + msg.position)
+
+      file.seek(msg.position) // go to the position in the file
+
+      val line = file.readLine()
+
+      log.info("the line at " + msg.position + " is '" + line + "'")
     }
 
     case _ => {
