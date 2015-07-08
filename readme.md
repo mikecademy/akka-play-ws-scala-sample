@@ -13,7 +13,7 @@ Domain:
   
  Client (demo)
    access view WS
-    - will read entier file/data/hisory after connecting
+    - will read entier file/data/history after connecting
     - will append data/messages to the file
     
     
