@@ -64,9 +64,9 @@ class ActorsTest
 
     val writerActorRef = TestActorRef(new WriterActor("history-file.log"))       // Creation of the TestActorRef
 
-    historyActorRef.underlyingActor.writerActor = writerActorRef
+    historyActorRef.underlyingActor.writerActor = writerActorRef // ensure that both HistoryActor and WriterActor use the calling thread dispatcher to take the asynchronicity out of your
 
-    "receive messages and change state" in {  // integration-like test (http://stackoverflow.com/questions/31298266/akka-testkit-how-to-wait-for-the-message-to-be-processed)
+    "receive WriteMsg message and change the state" in {  // integration-like test (http://stackoverflow.com/questions/31298266/akka-testkit-how-to-wait-for-the-message-to-be-processed)
 
       // This call is synchronous. The actor receive() method will be called in the current thread
 
@@ -77,5 +77,7 @@ class ActorsTest
       historyActorRef.underlyingActor.lastWrite must equal(WriteResult(1,7)) // With actorRef.underlyingActor, we can access the react actor instance created by Akka
     }
   }
+
+  // TODO: add tests around ReaderActors (when figured out how they suppose to work. one per ws-session, then why to use actors ?)
 
 }
