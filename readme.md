@@ -4,6 +4,10 @@ My StackOverflow answer about using actor for having parallel access to single f
 
 http://stackoverflow.com/questions/11576439/parallel-file-processing-in-scala/16574114#16574114
 
+Some useful links (to read):
+ http://www.ybrikman.com/writing/2013/11/24/play-scala-and-iteratees-vs-nodejs/
+ https://www.playframework.com/documentation/2.0/Iteratees
+
 Domain:
 
  History library
